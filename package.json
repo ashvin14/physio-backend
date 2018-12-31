@@ -1,0 +1,21 @@
+{
+  "name": "physio-backend",
+  "version": "1.0.0",
+  "description": "backend API's ",
+  "main": "index.js",
+  "repository": "git@gitlab.com:ashvin14/physiotherapist_backend.git",
+  "author": "ashvin, Waqar",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "mongoose": "^5.4.0",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.9"
+  }
+}
