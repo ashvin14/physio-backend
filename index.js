@@ -59,7 +59,7 @@ app.use(
     name: "mySessionVariable",
     secret: "keyboard cat",
     resave: true,
-    saveUninitialized: true,
+    saveUninitiasized: true,
     secure: false,
     cookie: {
       httpOnly: false,

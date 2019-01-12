@@ -1,3 +1,4 @@
+// change API's they are not correct
 const express = require("express");
 const fs = require("fs");
 const mongoose = require("mongoose");
@@ -17,5 +18,6 @@ module.exports.controllerFunction = function(app) {
       })
       .catch(err => res.json({ error: err.message }).status(400));
   });
+
   app.use("/doctor", route);
 };
