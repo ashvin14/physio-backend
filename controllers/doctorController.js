@@ -1,8 +1,6 @@
 // change API's they are not correct
 const express = require("express");
 const fs = require("fs");
-const mongoose = require("mongoose");
-const patientModel = require("../models/patientModel");
 
 const route = express.Router();
 

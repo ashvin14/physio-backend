@@ -1,15 +1,22 @@
 const express = require("express");
 const fs = require("fs");
-const mongoose = require("mongoose");
-const userModel = require("../models/userModel");
-
 const route = express.Router();
+const knex = require('knex')
+
+const db = require('knex')({
+  client: 'pg',
+  version: '10',
+  connection: {
+    host : '127.0.0.1',
+    user : 'postgres',
+    password : 'postgres',
+    database : 'physio'
+  }
+});
 
 module.exports.controllerFunction = function(app) {
   route.post("/login", (req, res) => {
-    let user = new userModel({});
     let { username, password } = req.body;
-
     user
       .find({ username, password })
       .then(user => {
@@ -20,11 +27,9 @@ module.exports.controllerFunction = function(app) {
   });
 
   route.post("/signup", (req, res) => {
-    let { username, Age, patientName, password, roles } = req.body;
-    let userDetails = { username, Age, patientName, password, roles };
-
-    const newUser = new userModel();
-    newUser.save(userDetails).then(user => res.status(201).json(user));
+    let { username, age, patientName, password, roles } = req.body;
+    console.log({ username, age, patientName, password });
+    db('users').insert({ username, age, patientName, password, roles });
   });
 
   route.delete("/signOut", (req, res) => {
