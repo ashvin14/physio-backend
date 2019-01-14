@@ -9,19 +9,10 @@ const fs = require("fs");
 
 const express = require("express");
 const session = require("express-session");
-const knex = require('knex')
 
-const db = require('knex')({
-  client: 'pg',
-  version: '10',
-  connection: {
-    host : '127.0.0.1',
-    user : 'postgres',
-    password : 'postgres',
-    database : 'physio'
-  }
-});
+const PORT = process.env.PORT || 8000;
 
+const db = require("./db");
 //In this project we are going to use express library
 //because it has good routing facility and also we can create mini apps using routers
 // It also has good Request Response module which same can also be implemented using http module
@@ -83,6 +74,6 @@ fs.readdirSync("./controllers").forEach(function(file) {
 //included all model files in main app using readdirSync which comes with fs module
 //it reads all files synchronously one by one and includes them using require function
 
-app.listen(8000, function() {
-  console.log("app server running on port:8000");
+app.listen(PORT, function() {
+  console.log("app server running on port:" + PORT);
 });

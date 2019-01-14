@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+const userModel = require("../models/userModel");
 const route = express.Router();
 const knex = require('knex')
 
@@ -26,10 +27,16 @@ module.exports.controllerFunction = function(app) {
       .catch(err => res.status(404).json(err.message));
   });
 
-  route.post("/signup", (req, res) => {
-    let { username, age, patientName, password, roles } = req.body;
-    console.log({ username, age, patientName, password });
-    db('users').insert({ username, age, patientName, password, roles });
+  app.post("/signup", (req, res) => {
+    let { username, patientName, Age, roles, password, problems } = req.body;
+    db('users')
+      .insert({ username, patientName, Age, roles, password, problems })
+      .then(function() {
+        db.select('*').from('users')
+            .then(function(userList) {
+              res.send(userList);
+            });
+      });
   });
 
   route.delete("/signOut", (req, res) => {
