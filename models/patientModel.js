@@ -1,11 +1,5 @@
-const mongoose = require("mongoose");
-const userschema = require("../schema/userSchema");
-const objectId = mongoose.Types.ObjectId;
-
 class PatientModel {
-  constructor() {
-    this.usermodel = mongoose.model("user", userschema);
-  }
+  constructor() {}
 
   findAllPatients() {
     return this.usermodel.find({ roles: "patient" }).then(patients => {

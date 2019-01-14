@@ -9,15 +9,7 @@ const fs = require("fs");
 
 const express = require("express");
 const session = require("express-session");
-const mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
-
-const dbName = "physio";
-mongoose.connect("mongodb://localhost/" + dbName);
-mongoose.connection.once("open", function(err) {
-  if (err) throw err;
-  console.log("successfully connected to database!");
-});
+const PORT = process.env.PORT || 8000;
 
 //In this project we are going to use express library
 //because it has good routing facility and also we can create mini apps using routers
@@ -77,14 +69,9 @@ fs.readdirSync("./controllers").forEach(function(file) {
 //included all controller files in main app using readdirSync which comes with fs module
 //it reads all files synchronously one by one and includes them using require function
 
-fs.readdirSync("./schema").forEach(function(file) {
-  if (file.indexOf(".js")) {
-    require("./schema/" + file);
-  }
-});
 //included all model files in main app using readdirSync which comes with fs module
 //it reads all files synchronously one by one and includes them using require function
 
-app.listen(8000, function() {
-  console.log("app server running on port:8000");
+app.listen(PORT, function() {
+  console.log("app server running on port:" + PORT);
 });

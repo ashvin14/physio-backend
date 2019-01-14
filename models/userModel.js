@@ -1,31 +1,25 @@
-const mongoose = require("mongoose");
-const userschema = require("../schema/userSchema");
-const objectId = mongoose.Types.ObjectId;
+const knex = require("../db/knex");
 
 class UserModel {
-  constructor() {
-    this.usermodel = mongoose.model("user", userschema);
-  }
-
   save(obj) {
-    let user = new this.usermodel(obj);
-    return user
-      .save()
-      .then(user => user)
-      .catch(err => err);
-  }
-
-  find({ username, password }) {
-    return this.usermodel
-      .findOne({ $and: [{ username, password }] })
-      .then(user => {
-        if (user == null) throw new Error("no such user found");
-        else return user;
-      })
+    console.log(obj);
+    return knex("users")
+      .insert(obj)
+      .then(response =>
+        knex
+          .where(obj)
+          .from("users")
+          .then(response => response)
+          .catch(err => {
+            throw err;
+          }),
+      )
       .catch(err => {
         throw err;
       });
   }
+
+  find({ username, password }) {}
 }
 
 module.exports = UserModel;
