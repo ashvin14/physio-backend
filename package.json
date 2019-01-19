@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon index.js",
+    "knex": "./node_modules/.bin/knex"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
