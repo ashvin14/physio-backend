@@ -5,9 +5,9 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       // Inserts seed entries
       return knex('scores').insert([
-        {score: 10, date: '2019-01-16', day:1},
-        {score: 23, date: '2019-01-17', day:2},
-        {score: 35, date: '2019-01-18', day:3},
+        {user_id: 3, session_id: 1234, score: 10, day:1, date: '2019-01-16'},
+        {user_id: 3, session_id: 1121, score: 23, day:2, date: '2019-01-17'},
+        {user_id: 1, session_id: 9101, score: 35, day:1, date: '2019-01-18'},
       ]);
     });
 };
