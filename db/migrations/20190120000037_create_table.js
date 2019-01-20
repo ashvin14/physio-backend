@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
   	table.integer('age').notNullable().defaultTo(0);
   	table.enu("gender", ["male", "female"]).notNullable();
   	table.enu("roles", ["patient", "doctor"]).notNullable();
-  	table.enu("diagnosed", ["elbow", "wrist"]).notNullable();
+  	table.enu("diagnosed", ["elbow", "wrist"]).defaultTo();
   })
   .createTable('exercise', function(table) {
   	table.integer('user_id').references('user_id').inTable('users').onUpdate('cascade').onDelete('cascade');
