@@ -1,6 +1,10 @@
 // Update with your config settings.
-const pg_username = process.env.PG_USERNAME || "postgres";
-const pg_password = process.env.PG_PASS || "25434712";
+require('dotenv').config();
+const pg_username = process.env.PG_USERNAME;
+const pg_password = process.env.PG_PASS;
+
+console.log(pg_password);
+console.log(pg_username);
 module.exports = {
   development: {
     client: "pg",
