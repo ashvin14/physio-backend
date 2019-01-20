@@ -2,7 +2,6 @@ const knex = require("../db/knex");
 
 class UserModel {
   save(obj) {
-    console.log(obj);
     return knex("users")
       .insert(obj)
       .then(response =>

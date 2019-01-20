@@ -12,7 +12,6 @@ const session = require("express-session");
 
 const PORT = process.env.PORT || 8000;
 
-const db = require("./db");
 //In this project we are going to use express library
 //because it has good routing facility and also we can create mini apps using routers
 // It also has good Request Response module which same can also be implemented using http module
