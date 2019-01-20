@@ -1,12 +1,16 @@
-class PatientModel {
-  constructor() {}
+const knex = require("../db/knex");
 
+class PatientModel {
   findAllPatients() {
-    return this.usermodel.find({ roles: "patient" }).then(patients => {
-      console.log(patients);
-      if (!patients.length) throw new Error("no  patients  found");
-      return patients;
-    });
+    const Roles = "patient";
+    return knex
+      .select()
+      .from("users")
+      .where({ roles: Roles })
+      .then(patients => patients)
+      .catch(err => {
+        throw err;
+      });
   }
 }
 

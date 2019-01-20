@@ -19,7 +19,17 @@ class UserModel {
       });
   }
 
-  find({ username, password }) {}
+  find({ username, password }) {
+    return knex
+      .select()
+      .from("users")
+      .where({ username, password })
+      .first()
+      .then(response => response)
+      .catch(err => {
+        throw err;
+      });
+  }
 }
 
 module.exports = UserModel;

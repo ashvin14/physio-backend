@@ -1,8 +1,10 @@
 // Update with your config settings.
+const pg_username = process.env.PG_USERNAME || "postgres";
+const pg_password = process.env.PG_PASS || "25434712";
 module.exports = {
   development: {
     client: "pg",
-    connection: `postgres://postgres:postgres@localhost/physio`,
+    connection: `postgres://${pg_username}:${pg_password}@localhost/physio`,
     pool: {
       afterCreate: function(conn, done) {
         conn.query('SET timezone ="UTC";', function(err) {
