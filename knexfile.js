@@ -2,9 +2,7 @@
 module.exports = {
   development: {
     client: "pg",
-    connection: `postgres://${process.env.PG_USERNAME}:${
-      process.env.PG_PASS
-    }@localhost/physio`,
+    connection: `postgres://postgres:postgres@localhost/physio`,
     pool: {
       afterCreate: function(conn, done) {
         conn.query('SET timezone ="UTC";', function(err) {
