@@ -21,8 +21,9 @@ module.exports.controllerFunction = function(app) {
   });
 
   app.post("/signup", (req, res) => {
-    let { username, Age, patientName, password, roles } = req.body;
-    let userDetails = { username, Age, patientName, password, roles };
+    let { fullname, username, password, age, mobile, gender, diagnosed } = req.body;
+    console.log({ fullname, username, password, age, mobile, gender, diagnosed })
+    let userDetails = { fullname, username, password, age, mobile, gender, diagnosed };
 
     const newUser = new userModel();
     newUser.save(userDetails).then(user => res.status(201).json(user));
