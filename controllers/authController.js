@@ -4,17 +4,6 @@ const userModel = require("../models/userModel");
 const route = express.Router();
 const knex = require("knex");
 
-const db = require("knex")({
-  client: "pg",
-  version: "10",
-  connection: {
-    host: "127.0.0.1",
-    user: "postgres",
-    password: "postgres",
-    database: "physio",
-  },
-});
-
 module.exports.controllerFunction = function(app) {
   route.post("/login", (req, res) => {
     let { username, password } = req.body;
@@ -23,6 +12,9 @@ module.exports.controllerFunction = function(app) {
       .find({ username, password })
       .then(user => {
         req.session.user = user;
+        let { sessionID } = req;
+        user = {...user, sessionID};
+        delete user.password;
         res.status(200).json(user);
       })
       .catch(err => res.status(404).json(err.message));
