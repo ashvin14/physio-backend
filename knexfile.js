@@ -1,5 +1,5 @@
 // Update with your config settings.
-require('dotenv').config();
+require("dotenv").config();
 const pg_username = process.env.PG_USERNAME;
 const pg_password = process.env.PG_PASS;
 

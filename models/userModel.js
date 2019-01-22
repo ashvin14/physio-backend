@@ -17,7 +17,6 @@ class UserModel {
         throw err;
       });
   }
-
   find({ username, password }) {
     return knex
       .select()
@@ -25,10 +24,8 @@ class UserModel {
       .where({ username, password })
       .first()
       .then(response => {
-        if (response)
-          return response;
-        else
-          throw new Error("Invalid credentials!");
+        if (response) return response;
+        else throw new Error("Either Email ID or Password is Invalid");
       })
       .catch(err => {
         throw err;
