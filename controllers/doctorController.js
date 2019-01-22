@@ -18,8 +18,16 @@ module.exports.controllerFunction = function(app) {
   });
 
   route.get("/patient/score/:patientID", (req, res) => {
-    
+    let { patientID } = req.params;    
+    let user = new patientModel({});
+
+    user
+      .getMaxScore(patientID)
+      .then(patientList => {
+        res.json(patientList).status(200);
+      })
+      .catch(err => res.json({ error: err.message }).status(400));
   });
 
-  app.use("/doctor", chk_login.check , route);
+  app.use("/doctor", chk_login.check, route);
 };
