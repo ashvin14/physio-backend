@@ -2,6 +2,7 @@
 const express = require("express");
 const fs = require("fs");
 const patientModel = require("../models/patientModel");
+const chk_login = require("../middleware/check_login");
 const route = express.Router();
 
 module.exports.controllerFunction = function(app) {
@@ -16,5 +17,9 @@ module.exports.controllerFunction = function(app) {
       .catch(err => res.json({ error: err.message }).status(400));
   });
 
-  app.use("/doctor", route);
+  route.get("/patient/score/:patientID", (req, res) => {
+    
+  });
+
+  app.use("/doctor", chk_login.check , route);
 };

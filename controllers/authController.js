@@ -29,7 +29,7 @@ module.exports.controllerFunction = function(app) {
     newUser.save(userDetails).then(user => res.status(201).json(user));
   });
 
-  route.delete("/signOut", (req, res) => {
+  route.delete("/logout", (req, res) => {
     delete req.session.user;
     res.json({ loggedOut: true }).status(200);
   });
