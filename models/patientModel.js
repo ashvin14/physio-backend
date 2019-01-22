@@ -7,7 +7,12 @@ class PatientModel {
       .select()
       .from("users")
       .where({ roles: Roles })
-      .then(patients => patients)
+      .then(patients => {
+        if (patients.length)
+          return patients
+        else
+          throw new Error('Not Found!');
+      })
       .catch(err => {
         throw err;
       });
@@ -31,7 +36,7 @@ class PatientModel {
         if (points.length)
           return points
         else
-          return 'Not Found!';
+          throw new Error('Not Found!');
       })
     .catch(err => {
       throw err;
@@ -65,6 +70,21 @@ class PatientModel {
     .then(details => {
         if (details.length)
           return details[0];
+        else
+          throw new Error('Not Found!');
+      })
+    .catch(err => {
+      throw err;
+    });
+  }
+
+  getSessions() {
+    return knex
+    .select('session_id')
+    .from('exercise')
+    .then(sessions => {
+        if (sessions.length)
+          return sessions;
         else
           throw new Error('Not Found!');
       })

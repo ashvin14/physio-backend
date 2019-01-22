@@ -29,6 +29,40 @@ class UserModel {
         throw err;
       });
   }
+
+  saveScores(obj) {
+    return knex("scores")
+      .insert(obj)
+      .then(response =>
+        knex
+          .where(obj)
+          .from("scores")
+          .then(response => response)
+          .catch(err => {
+            throw err;
+          }),
+      )
+      .catch(err => {
+        throw err;
+      });
+  }
+
+  saveROMDetails(obj) {
+    return knex("exercise")
+      .insert(obj)
+      .then(response =>
+        knex
+          .where(obj)
+          .from("exercise")
+          .then(response => response)
+          .catch(err => {
+            throw err;
+          }),
+      )
+      .catch(err => {
+        throw err;
+      });
+  }
 }
 
 module.exports = UserModel;
