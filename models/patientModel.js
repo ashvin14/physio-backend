@@ -15,7 +15,7 @@ class PatientModel {
 
   getMaxScore(patientID) {
     return knex
-      .select('session_id', 'day', 'score')
+      .select('session_id', 'day', 'score', 'joint')
       .from('scores')
       .whereIn('score',
           function() {
@@ -32,6 +32,41 @@ class PatientModel {
           return points
         else
           return 'Not Found!';
+      })
+    .catch(err => {
+      throw err;
+    });
+  }
+
+  getScore(patientID, day) {
+    return knex
+      .select('session_id', 'day', 'score', 'joint')
+      .from('scores')
+      .where({
+        user_id: patientID,
+        day:  day
+      })
+      .then(points => {
+        if (points.length)
+          return points
+        else
+          throw new Error('Not Found!');
+      })
+    .catch(err => {
+      throw err;
+    });
+  }
+
+  getROMDetails(sessionID) {
+    return knex
+    .select('session_id', 'min_rom', 'max_rom', 'joint')
+    .from('exercise')
+    .where('session_id', sessionID)
+    .then(details => {
+        if (details.length)
+          return details[0];
+        else
+          throw new Error('Not Found!');
       })
     .catch(err => {
       throw err;
