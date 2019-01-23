@@ -40,6 +40,7 @@ app.use((req, res, next) => {
 });
 app.use(
   require("cors")({
+    origin: "http://localhost:3000",
     credentials: true,
   }),
 );
@@ -49,14 +50,15 @@ app.use(bodyParser({ limit: "50mb" }));
 
 app.use(
   session({
-    name: "mySessionVariable",
+    name: "localhost",
     secret: "keyboard cat",
-    resave: true,
-    saveUninitiasized: true,
+    resave: false,
+    saveUninitialized: false,
     secure: false,
     cookie: {
-      httpOnly: false,
       secure: false,
+      sameSite: false,
+      httpOnly: true,
     },
   }),
 );

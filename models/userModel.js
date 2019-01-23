@@ -24,7 +24,12 @@ class UserModel {
       .from("users")
       .where({ username, password })
       .first()
-      .then(response => response)
+      .then(response => {
+        if (response)
+          return response;
+        else
+          throw new Error("Invalid credentials!");
+      })
       .catch(err => {
         throw err;
       });

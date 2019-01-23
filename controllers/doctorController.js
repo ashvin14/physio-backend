@@ -7,9 +7,9 @@ const route = express.Router();
 
 module.exports.controllerFunction = function(app) {
   route.get("/all/patients", (req, res) => {
-    let user = new patientModel({});
+    let patient = new patientModel({});
 
-    user
+    patient
       .findAllPatients()
       .then(patientList => {
         res.json(patientList).status(200);
@@ -19,9 +19,9 @@ module.exports.controllerFunction = function(app) {
 
   route.get("/patient/maxscore/:patientID", (req, res) => {
     let { patientID } = req.params;    
-    let user = new patientModel({});
+    let patient = new patientModel({});
 
-    user
+    patient
       .getMaxScore(patientID)
       .then(maxScoreDetails => {
         res.json(maxScoreDetails).status(200);
@@ -29,11 +29,11 @@ module.exports.controllerFunction = function(app) {
       .catch(err => res.json({ error: err.message }).status(400));
   });
 
-  route.get("/patient/score/:patientID/:day", (req, res) => {
-    let { patientID, day } = req.params;   
-    let user = new patientModel({});
+  route.get("/patient/score/", (req, res) => {
+    let { patientID, day } = req.query;   
+    let patient = new patientModel({});
 
-    user
+    patient
       .getScore(patientID, day)
       .then(scoreDetails => {
         res.json(scoreDetails).status(200);
@@ -43,9 +43,9 @@ module.exports.controllerFunction = function(app) {
 
     route.get("/patient/rom/:sessionID", (req, res) => {
     let { sessionID } = req.params;   
-    let user = new patientModel({});
+    let patient = new patientModel({});
 
-    user
+    patient
       .getROMDetails(sessionID)
       .then(ROMDetails => {
         res.json(ROMDetails).status(200);
@@ -54,11 +54,10 @@ module.exports.controllerFunction = function(app) {
   });
 
     route.get("/sessions", (req, res) => {
-    let { sessionID } = req.params;   
-    let user = new patientModel({});
+    let patient = new patientModel({});
 
-    user
-      .getSessions(sessionID)
+    patient
+      .getSessions()
       .then(sessions => {
         res.json(sessions).status(200);
       })

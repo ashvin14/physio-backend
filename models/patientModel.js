@@ -9,9 +9,9 @@ class PatientModel {
       .where({ roles: Roles })
       .then(patients => {
         if (patients.length)
-          return patients
+          return patients;
         else
-          throw new Error('Not Found!');
+          throw new Error('Patient Details Not Found!');
       })
       .catch(err => {
         throw err;
@@ -28,15 +28,16 @@ class PatientModel {
               .select()
               .max('score')
               .from('scores')
-              .where('user_id', patientID)
               .groupBy('session_id');
           }
       )
+      .andWhere('user_id', patientID)
+      .orderBy('day')
       .then(points => {
         if (points.length)
           return points
         else
-          throw new Error('Not Found!');
+          throw new Error('Score Details Not Found for the given Patient ID!');
       })
     .catch(err => {
       throw err;
@@ -55,7 +56,7 @@ class PatientModel {
         if (points.length)
           return points
         else
-          throw new Error('Not Found!');
+          throw new Error('Score Details Not Found!');
       })
     .catch(err => {
       throw err;
@@ -71,7 +72,7 @@ class PatientModel {
         if (details.length)
           return details[0];
         else
-          throw new Error('Not Found!');
+          throw new Error('ROM Details Not Found for given Session ID!');
       })
     .catch(err => {
       throw err;
@@ -86,7 +87,7 @@ class PatientModel {
         if (sessions.length)
           return sessions;
         else
-          throw new Error('Not Found!');
+          throw new Error('Session Details Not Found!');
       })
     .catch(err => {
       throw err;
