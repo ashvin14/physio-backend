@@ -3,6 +3,7 @@ const fs = require("fs");
 const userModel = require("../models/userModel");
 const route = express.Router();
 const knex = require("knex");
+const chkLogin = require("../middleware/checkLogin");
 
 module.exports.controllerFunction = function(app) {
   route.post("/login", (req, res) => {
@@ -11,6 +12,8 @@ module.exports.controllerFunction = function(app) {
     user
       .find({ username, password })
       .then(user => {
+        if (user.roles === 'patient')
+          res.status(403).json("Forbidden access");
         req.session.user = user;
         let { sessionID } = req;
         user = {...user, sessionID};        
@@ -18,6 +21,10 @@ module.exports.controllerFunction = function(app) {
         res.status(200).json(user);
       })
       .catch(err => res.status(404).json(err.message));
+  });
+
+  route.post("/unityLogin", chkLogin.checkLoginType, (req, res) => {
+
   });
 
   route.post("/signup", (req, res) => {

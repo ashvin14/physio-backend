@@ -7,3 +7,10 @@ exports.check = function(req, res, next) {
 	else
 		res.status(401).json("Unauthorized access");
 };
+
+exports.checkLoginType = function(req, res, next) {
+	if (req.body.roles === 'doctor' || req.body.roles === 'patient' && req.body.type === 'unity')
+		next();
+	else
+		res.status(403).json("Forbidden access");
+};
