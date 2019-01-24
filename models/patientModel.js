@@ -84,7 +84,8 @@ class PatientModel {
 
   getSessions() {
     return knex
-    .select('session_id')
+    .distinct('session_id')
+    .select()
     .from('exercise')
     .then(sessions => {
         if (sessions.length)

@@ -56,7 +56,7 @@ module.exports.controllerFunction = function(app) {
       .catch(err => res.json({ error: err.message }).status(400));
   });
 
-    route.get("/sessions", (req, res) => {
+  route.get("/sessions", (req, res) => {
     let patient = new patientModel({});
 
     patient

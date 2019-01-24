@@ -20,14 +20,10 @@ module.exports.controllerFunction = function(app) {
       .catch(err => res.status(404).json(err.message));
   });
 
-  route.get("/test", (req, res) => {
-    console.log(req.session);
-  });
-
   route.post("/signup", (req, res) => {
-    let { fullname, username, password, age, mobile, gender, diagnosed } = req.body;
+    let { fullname, username, password, age, mobile, gender, diagnosed, roles } = req.body;
     console.log({ fullname, username, password, age, mobile, gender, diagnosed })
-    let userDetails = { fullname, username, password, age, mobile, gender, diagnosed };
+    let userDetails = { fullname, username, password, age, mobile, gender, diagnosed, roles };
 
     const newUser = new userModel();
     newUser.save(userDetails).then(user => res.status(201).json(user));
