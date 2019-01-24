@@ -18,7 +18,7 @@ class PatientModel {
       });
   }
 
-  getMaxScore(patientID) {
+  getMaxScore(patientID, joint) {
     return knex
       .select('session_id', 'day', 'score', 'joint')
       .from('scores')
@@ -32,6 +32,7 @@ class PatientModel {
           }
       )
       .andWhere('user_id', patientID)
+      .andWhere('joint', joint)
       .orderBy('day')
       .then(points => {
         if (points.length)
@@ -44,13 +45,14 @@ class PatientModel {
     });
   }
 
-  getScore(patientID, day) {
+  getScore(patientID, day, joint) {
     return knex
       .select('session_id', 'day', 'score', 'joint')
       .from('scores')
       .where({
         user_id: patientID,
-        day:  day
+        day:  day,
+        joint: joint
       })
       .then(points => {
         if (points.length)
@@ -63,11 +65,12 @@ class PatientModel {
     });
   }
 
-  getROMDetails(sessionID) {
+  getROMDetails(sessionID, joint) {
     return knex
-    .select('session_id', 'min_rom', 'max_rom', 'joint')
+    .select('session_id', 'joint', 'min_rom', 'max_rom')
     .from('exercise')
     .where('session_id', sessionID)
+    .andWhere('joint', joint)
     .then(details => {
         if (details.length)
           return details[0];

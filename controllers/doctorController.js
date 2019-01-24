@@ -19,10 +19,11 @@ module.exports.controllerFunction = function(app) {
 
   route.get("/patient/maxscore/:patientID", (req, res) => {
     let { patientID } = req.params;    
+    let { joint } = req.query;    
     let patient = new patientModel({});
 
     patient
-      .getMaxScore(patientID)
+      .getMaxScore(patientID, joint)
       .then(maxScoreDetails => {
         res.json(maxScoreDetails).status(200);
       })
@@ -30,11 +31,11 @@ module.exports.controllerFunction = function(app) {
   });
 
   route.get("/patient/score/", (req, res) => {
-    let { patientID, day } = req.query;   
+    let { patientID, day, joint } = req.query;   
     let patient = new patientModel({});
 
     patient
-      .getScore(patientID, day)
+      .getScore(patientID, day, joint)
       .then(scoreDetails => {
         res.json(scoreDetails).status(200);
       })
@@ -42,11 +43,13 @@ module.exports.controllerFunction = function(app) {
   });
 
     route.get("/patient/rom/:sessionID", (req, res) => {
-    let { sessionID } = req.params;   
+    let { sessionID } = req.params;
+    let { joint } = req.query;    
+
     let patient = new patientModel({});
 
     patient
-      .getROMDetails(sessionID)
+      .getROMDetails(sessionID, joint)
       .then(ROMDetails => {
         res.json(ROMDetails).status(200);
       })
