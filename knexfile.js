@@ -3,8 +3,6 @@ require('dotenv').config();
 const pg_username = process.env.PG_USERNAME;
 const pg_password = process.env.PG_PASS;
 
-console.log(pg_password);
-console.log(pg_username);
 module.exports = {
   development: {
     client: "pg",
