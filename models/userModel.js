@@ -8,6 +8,7 @@ class UserModel {
         knex
           .where(obj)
           .from("users")
+          .first()
           .then(response => response)
           .catch(err => {
             throw err;

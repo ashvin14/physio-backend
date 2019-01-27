@@ -18,8 +18,8 @@ module.exports.controllerFunction = function(app) {
   });
 
   route.get("/patient/maxscore/:patientID", (req, res) => {
-    let { patientID } = req.params;    
-    let { joint } = req.query;    
+    let { patientID } = req.params;
+    let { joint } = req.query;
     let patient = new patientModel({});
 
     patient
@@ -31,7 +31,7 @@ module.exports.controllerFunction = function(app) {
   });
 
   route.get("/patient/score/", (req, res) => {
-    let { patientID, day, joint } = req.query;   
+    let { patientID, day, joint } = req.query;
     let patient = new patientModel({});
 
     patient
@@ -42,9 +42,9 @@ module.exports.controllerFunction = function(app) {
       .catch(err => res.json({ error: err.message }).status(400));
   });
 
-    route.get("/patient/rom/:sessionID", (req, res) => {
+  route.get("/patient/rom/:sessionID", (req, res) => {
     let { sessionID } = req.params;
-    let { joint } = req.query;    
+    let { joint } = req.query;
 
     let patient = new patientModel({});
 

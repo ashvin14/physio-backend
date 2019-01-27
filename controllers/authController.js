@@ -22,7 +22,7 @@ module.exports.controllerFunction = function(app) {
       .catch(err => res.status(404).json(err.message));
   });
 
-  route.post("/unityLogin", chkLogin.checkLoginType, (req, res) => {});
+  // route.post("/unityLogin", chkLogin.checkLoginType, (req, res) => {});
 
   route.post("/signup", (req, res) => {
     let {
