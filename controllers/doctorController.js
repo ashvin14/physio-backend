@@ -14,12 +14,12 @@ module.exports.controllerFunction = function(app) {
       .then(patientList => {
         res.json(patientList).status(200);
       })
-      .catch(err => res.json({ error: err.message }).status(400));
+      .catch(err => res.status(400).json(err.message));
   });
 
-  route.get("/patient/maxscore/:patientID", (req, res) => {
-    let { patientID } = req.params;
-    let { joint } = req.query;
+  route.get("/patient/maxscore", (req, res) => {
+    let { joint, patientID } = req.query;
+    console.log(joint, patientID);
     let patient = new patientModel({});
 
     patient
@@ -27,10 +27,12 @@ module.exports.controllerFunction = function(app) {
       .then(maxScoreDetails => {
         res.json(maxScoreDetails).status(200);
       })
-      .catch(err => res.json({ error: err.message }).status(400));
+      .catch(err => {
+        res.status(400).json(err.message);
+      });
   });
 
-  route.get("/patient/score/", (req, res) => {
+  route.get("/patient/score", (req, res) => {
     let { patientID, day, joint } = req.query;
     let patient = new patientModel({});
 
@@ -39,7 +41,7 @@ module.exports.controllerFunction = function(app) {
       .then(scoreDetails => {
         res.json(scoreDetails).status(200);
       })
-      .catch(err => res.json({ error: err.message }).status(400));
+      .catch(err => res.json(err.message).status(400));
   });
 
   route.get("/patient/rom/:sessionID", (req, res) => {
@@ -53,7 +55,7 @@ module.exports.controllerFunction = function(app) {
       .then(ROMDetails => {
         res.json(ROMDetails).status(200);
       })
-      .catch(err => res.json({ error: err.message }).status(400));
+      .catch(err => res.json(err.message).status(400));
   });
 
   route.get("/sessions", (req, res) => {
@@ -64,7 +66,7 @@ module.exports.controllerFunction = function(app) {
       .then(sessions => {
         res.json(sessions).status(200);
       })
-      .catch(err => res.json({ error: err.message }).status(400));
+      .catch(err => res.json(err.message).status(400));
   });
 
   app.use("/doctor", chkLogin.check, route);
