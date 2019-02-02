@@ -7,10 +7,8 @@ class PatientModel {
       .select()
       .from("users")
       .where({ roles: Roles })
-      .then(patients => {
-        if (patients.length) return patients;
-        else throw new Error("Patient Details Not Found!");
-      })
+      .orderBy('user_id')
+      .then(patients => patients)
       .catch(err => {
         throw err;
       });
@@ -18,22 +16,13 @@ class PatientModel {
 
   getMaxScore(patientID, joint) {
     return knex
-      .select("session_id", "day", "score", "joint")
+      .select("session_id", "day", "joint").max("score as maxscore")
       .from("scores")
-      .whereIn("score", function() {
-        this.select()
-          .max("score")
-          .from("scores")
-          .groupBy("session_id");
-      })
-      .andWhere("user_id", patientID)
+      .where("user_id", patientID)
       .andWhere("joint", joint)
+      .groupBy("session_id", "day", "joint")
       .orderBy("day")
-      .then(points => {
-        if (points.length) return points;
-        else
-          throw new Error("Score Details Not Found for the given Patient ID!");
-      })
+      .then(points => points)
       .catch(err => {
         throw err;
       });
@@ -48,25 +37,21 @@ class PatientModel {
         day: day,
         joint: joint,
       })
-      .then(points => {
-        if (points.length) return points;
-        else throw new Error("Score Details Not Found!");
-      })
+      .orderBy('date')
+      .then(points => points)
       .catch(err => {
         throw err;
       });
   }
 
-  getROMDetails(sessionID, joint) {
+  getROMDetails(patientID, joint) {
     return knex
-      .select("session_id", "joint", "min_rom", "max_rom")
+      .select("session_id", "joint", "created_at", "min_rom", "max_rom")
       .from("exercise")
-      .where("session_id", sessionID)
+      .where("user_id", patientID)
       .andWhere("joint", joint)
-      .then(details => {
-        if (details.length) return details[0];
-        else throw new Error("ROM Details Not Found for given Session ID!");
-      })
+      .orderBy('created_at')
+      .then(details => details)
       .catch(err => {
         throw err;
       });
@@ -77,10 +62,90 @@ class PatientModel {
       .distinct("session_id")
       .select()
       .from("exercise")
-      .then(sessions => {
-        if (sessions.length) return sessions;
-        else throw new Error("Session Details Not Found!");
-      })
+      .then(sessions => sessions)
+      .catch(err => {
+        throw err;
+      });
+  }
+
+  deletePatientFromUsers(patientID) {
+    return knex('users')
+      .where('user_id', patientID)
+      .del()
+      .then(response => response)
+      .catch(err => {
+        throw new Error("Patient Cannot be Deleted");
+      });
+  }
+
+  deletePatientFromExercise(patientID) {
+    return knex('exercise')
+      .where('user_id', patientID)
+      .del()
+      .then(response => response)
+      .catch(err => {
+        throw new Error("E: Patient Cannot be Deleted");
+      });
+  }
+
+  deletePatientFromScores(patientID) {
+    return knex('scores')
+      .where('user_id', patientID)
+      .del()
+      .then(response => response)
+      .catch(err => {
+        throw new Error("S: Patient Cannot be Deleted");
+      });
+  }
+
+  deletePatientFromMessages(patientID) {
+    return knex('messages')
+      .where('user_id', patientID)
+      .del()
+      .then(response => response)
+      .catch(err => {
+        throw new Error("M: Patient Cannot be Deleted");
+      });
+  }
+
+  updatePatientDetails(patientID, updatedDetails) {
+    let user_id = patientID;
+    let patientData = { user_id, ...updatedDetails }
+
+    return knex('users')
+      .where('user_id', patientID)
+      .update(updatedDetails)
+      .then(() => patientData)
+      .catch(err => {
+        throw new Error("User Details cannot be updated");  
+      });
+  }
+
+  sendMail(mail) {
+    return knex("messages")
+      .insert(mail)
+      .then(response =>
+        knex
+          .where(mail)
+          .from("messages")
+          .first()
+          .then(response => response)
+          .catch(err => {
+            throw new Error("Mail cannot be saved!");
+          }),
+      )
+      .catch(err => {
+        throw err;
+      });
+  }
+
+  getMails(patientID) {
+    return knex
+      .select()
+      .from("messages")
+      .where("user_id", patientID)
+      .orderBy('date')
+      .then(mails => mails)
       .catch(err => {
         throw err;
       });

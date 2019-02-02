@@ -11,7 +11,10 @@ module.exports.controllerFunction = function(app) {
     let scoreDetails = { user_id, session_id, score, date, day, joint };
 
     const newUser = new userModel();
-    newUser.saveScores(scoreDetails).then(scores => res.status(201).json(scores[0]));
+    newUser
+      .saveScores(scoreDetails)
+      .then(scores => res.status(201).json(scores))
+      .catch(err => res.status(500).send(err.message));
   });
 
   route.post('/rom', (req, res) => {
@@ -19,7 +22,10 @@ module.exports.controllerFunction = function(app) {
     let ROMDetails = { user_id, session_id, joint, created_at, min_rom, max_rom };
 
     const newUser = new userModel();
-    newUser.saveROMDetails(ROMDetails).then(rom => res.status(201).json(rom[0]));
+    newUser
+      .saveROMDetails(ROMDetails)
+      .then(rom => res.status(201).json(rom))
+      .catch(err => res.status(500).send(err.message));
   });
 
   app.use("/patient", route);
