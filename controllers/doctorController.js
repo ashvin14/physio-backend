@@ -12,23 +12,22 @@ module.exports.controllerFunction = function(app) {
     patient
       .findAllPatients()
       .then(patientList => {
-        res.json(patientList).status(200);
+        res.status(200).json(patientList);
       })
-      .catch(err => res.status(400).json(err.message));
+      .catch(err => res.status(400).send(err.message));
   });
 
   route.get("/patient/maxscore", (req, res) => {
-    let { joint, patientID } = req.query;
-    console.log(joint, patientID);
+    let { patientID, joint } = req.query;
     let patient = new patientModel({});
 
     patient
       .getMaxScore(patientID, joint)
       .then(maxScoreDetails => {
-        res.json(maxScoreDetails).status(200);
+        res.status(200).json(maxScoreDetails);
       })
       .catch(err => {
-        res.status(400).json(err.message);
+        res.status(400).send(err.message);
       });
   });
 
@@ -39,23 +38,23 @@ module.exports.controllerFunction = function(app) {
     patient
       .getScore(patientID, day, joint)
       .then(scoreDetails => {
-        res.json(scoreDetails).status(200);
+        res.status(200).json(scoreDetails);
       })
-      .catch(err => res.json(err.message).status(400));
+      .catch(err => res.status(400).send(err.message));
   });
 
-  route.get("/patient/rom/:sessionID", (req, res) => {
-    let { sessionID } = req.params;
+  route.get("/patient/rom/:patientID", (req, res) => {
+    let { patientID } = req.params;
     let { joint } = req.query;
 
     let patient = new patientModel({});
 
     patient
-      .getROMDetails(sessionID, joint)
+      .getROMDetails(patientID, joint)
       .then(ROMDetails => {
-        res.json(ROMDetails).status(200);
+        res.status(200).json(ROMDetails);
       })
-      .catch(err => res.json(err.message).status(400));
+      .catch(err => res.status(400).send(err.message));
   });
 
   route.get("/sessions", (req, res) => {
@@ -64,9 +63,69 @@ module.exports.controllerFunction = function(app) {
     patient
       .getSessions()
       .then(sessions => {
-        res.json(sessions).status(200);
+        res.status(200).json(sessions);
       })
-      .catch(err => res.json(err.message).status(400));
+      .catch(err => res.status(400).send(err.message));
+  });
+
+  route.delete("/delete/:patientID", (req, res) => {
+    let { patientID } = req.params;
+    let patient = new patientModel({});
+
+    patient
+      .deletePatientFromUsers(patientID)
+      .then(patient.deletePatientFromExercise(patientID))
+      .then(patient.deletePatientFromScores(patientID))
+      .then(patient.deletePatientFromMessages(patientID))
+      .then(() => {
+        res.status(200).json({"status": "deleted"});
+      })
+      .catch(err => {
+        res.status(400).send(err.message)
+      });
+  });
+
+  route.put("/update/:patientID", (req, res) => {
+    let { patientID } = req.params;
+    let updatedDetails = req.body;
+    let patient = new patientModel({});
+
+    patient
+      .updatePatientDetails(patientID, updatedDetails)
+      .then(patientData => {
+        res.status(200).json(patientData);
+      })
+      .catch(err => {
+        res.status(400).send(err.message);
+      });
+  });
+
+  route.post("/sendmail", (req, res) => {
+    let mail = req.body;
+    let patient = new patientModel({});
+
+    patient
+      .sendMail(mail)
+      .then(response => {
+        res.status(200).json(response);
+      })
+      .catch(err => {
+        res.status(400).send(err.message);
+      });
+  });
+
+  route.get("/getmail/:patientID", (req, res) => {
+    let { patientID } = req.params;
+    let patient = new patientModel({});
+
+    patient
+      .getMails(patientID)
+      .then(msgs => {
+        res.status(200).json(msgs);
+      })
+      .catch(err => {
+        res.status(400).send(err.message);
+      });
   });
 
   app.use("/doctor", chkLogin.check, route);

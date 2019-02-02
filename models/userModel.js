@@ -2,12 +2,12 @@ const knex = require("../db/knex");
 
 class UserModel {
   save(obj) {
-    return knex("users")
+    return knex('users')
       .insert(obj)
       .then(response =>
         knex
           .where(obj)
-          .from("users")
+          .from('users')
           .first()
           .then(response => response)
           .catch(err => {
@@ -15,9 +15,13 @@ class UserModel {
           }),
       )
       .catch(err => {
-        throw err;
+        if (err.code === '23505')
+          throw new Error("Username already exists! Please chose another one");
+        else
+          throw err
       });
   }
+
   find({ username, password }) {
     return knex
       .select()
@@ -40,9 +44,10 @@ class UserModel {
         knex
           .where(obj)
           .from("scores")
+          .first()
           .then(response => response)
           .catch(err => {
-            throw err;
+            throw new Error("Score Details cannot be saved!");
           }),
       )
       .catch(err => {
@@ -57,9 +62,10 @@ class UserModel {
         knex
           .where(obj)
           .from("exercise")
+          .first()
           .then(response => response)
           .catch(err => {
-            throw err;
+            throw new Error("ROM Details cannot be saved!");
           }),
       )
       .catch(err => {
