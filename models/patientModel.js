@@ -14,6 +14,20 @@ class PatientModel {
       });
   }
 
+  findOneAndReturn(patientID) {
+    return knex("users")
+      .select()
+      .where({ user_id: patientID })
+      .first()
+      .then(patient => {
+        if (patient) return patient;
+        else throw new Error(`no such patient with ${patientID} found`);
+      })
+      .catch(err => {
+        throw err;
+      });
+  }
+
   getMaxScore(patientID, joint) {
     return knex
       .select("session_id", "day", "joint").max("score as maxscore")

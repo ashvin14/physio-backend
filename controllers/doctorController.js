@@ -31,6 +31,18 @@ module.exports.controllerFunction = function(app) {
       });
   });
 
+  route.get("/:patientID", (req, res) => {
+    let { patientID } = req.params;
+    let patient = new patientModel({});
+
+    patient.findOneAndReturn(patientID).then(patient => {
+      if (patient) {
+        res.status(200).json(patient);
+      } else
+        res.status(404).send("patient for given User id could not be found");
+    });
+  });
+
   route.get("/patient/score", (req, res) => {
     let { patientID, day, joint } = req.query;
     let patient = new patientModel({});
