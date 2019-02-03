@@ -7,7 +7,7 @@ class PatientModel {
       .select()
       .from("users")
       .where({ roles: Roles })
-      .orderBy('user_id')
+      .orderBy("user_id")
       .then(patients => patients)
       .catch(err => {
         throw err;
@@ -30,7 +30,8 @@ class PatientModel {
 
   getMaxScore(patientID, joint) {
     return knex
-      .select("session_id", "day", "joint").max("score as maxscore")
+      .select("session_id", "day", "joint")
+      .max("score as maxscore")
       .from("scores")
       .where("user_id", patientID)
       .andWhere("joint", joint)
@@ -51,7 +52,7 @@ class PatientModel {
         day: day,
         joint: joint,
       })
-      .orderBy('date')
+      .orderBy("date")
       .then(points => points)
       .catch(err => {
         throw err;
@@ -64,7 +65,7 @@ class PatientModel {
       .from("exercise")
       .where("user_id", patientID)
       .andWhere("joint", joint)
-      .orderBy('created_at')
+      .orderBy("created_at")
       .then(details => details)
       .catch(err => {
         throw err;
@@ -83,8 +84,8 @@ class PatientModel {
   }
 
   deletePatientFromUsers(patientID) {
-    return knex('users')
-      .where('user_id', patientID)
+    return knex("users")
+      .where("user_id", patientID)
       .del()
       .then(response => response)
       .catch(err => {
@@ -93,8 +94,8 @@ class PatientModel {
   }
 
   deletePatientFromExercise(patientID) {
-    return knex('exercise')
-      .where('user_id', patientID)
+    return knex("exercise")
+      .where("user_id", patientID)
       .del()
       .then(response => response)
       .catch(err => {
@@ -103,8 +104,8 @@ class PatientModel {
   }
 
   deletePatientFromScores(patientID) {
-    return knex('scores')
-      .where('user_id', patientID)
+    return knex("scores")
+      .where("user_id", patientID)
       .del()
       .then(response => response)
       .catch(err => {
@@ -113,8 +114,8 @@ class PatientModel {
   }
 
   deletePatientFromMessages(patientID) {
-    return knex('messages')
-      .where('user_id', patientID)
+    return knex("messages")
+      .where("user_id", patientID)
       .del()
       .then(response => response)
       .catch(err => {
@@ -124,23 +125,23 @@ class PatientModel {
 
   updatePatientDetails(patientID, updatedDetails) {
     let user_id = patientID;
-    let patientData = { user_id, ...updatedDetails }
+    let patientData = { user_id, ...updatedDetails };
 
-    return knex('users')
-      .where('user_id', patientID)
+    return knex("users")
+      .where("user_id", patientID)
       .update(updatedDetails)
       .then(() => patientData)
       .catch(err => {
-        throw new Error("User Details cannot be updated");  
+        throw new Error("User Details cannot be updated");
       });
   }
 
-  sendMail(mail) {
+  saveMail({ message, user_id }) {
     return knex("messages")
-      .insert(mail)
+      .insert({ message, user_id })
       .then(response =>
         knex
-          .where(mail)
+          .where({ message, user_id })
           .from("messages")
           .first()
           .then(response => response)
@@ -158,7 +159,7 @@ class PatientModel {
       .select()
       .from("messages")
       .where("user_id", patientID)
-      .orderBy('date')
+      .orderBy("date")
       .then(mails => mails)
       .catch(err => {
         throw err;

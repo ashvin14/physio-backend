@@ -3,7 +3,8 @@ const express = require("express");
 const fs = require("fs");
 const patientModel = require("../models/patientModel");
 const chkLogin = require("../middleware/checkLogin");
-const route = express.Router();
+const route = express.Router(),
+  emailSender = require("../mail-sender");
 
 module.exports.controllerFunction = function(app) {
   route.get("/all/patients", (req, res) => {
@@ -90,10 +91,10 @@ module.exports.controllerFunction = function(app) {
       .then(patient.deletePatientFromScores(patientID))
       .then(patient.deletePatientFromMessages(patientID))
       .then(() => {
-        res.status(200).json({"status": "deleted"});
+        res.status(200).json({ status: "deleted" });
       })
       .catch(err => {
-        res.status(400).send(err.message)
+        res.status(400).send(err.message);
       });
   });
 
@@ -113,13 +114,33 @@ module.exports.controllerFunction = function(app) {
   });
 
   route.post("/sendmail", (req, res) => {
-    let mail = req.body;
-    let patient = new patientModel({});
+    let { message } = req.body;
+    let { user_id } = req.query;
+    let Patient = new patientModel({});
 
-    patient
-      .sendMail(mail)
-      .then(response => {
-        res.status(200).json(response);
+    if (!message) res.status(500).send("message field cannot be empty");
+
+    Patient.findOneAndReturn(user_id)
+      .then(patient => {
+        emailSender
+          .functionToSendEmail(
+            patient.email,
+            "update Report",
+            patient.fullname,
+            message,
+          )
+          .then(response => {
+            Patient.saveMail({ message, user_id })
+              .then(response => {
+                res.status(200).json(response);
+              })
+              .catch(err => {
+                throw err;
+              });
+          })
+          .catch(err => {
+            throw err;
+          });
       })
       .catch(err => {
         res.status(400).send(err.message);
@@ -136,6 +157,7 @@ module.exports.controllerFunction = function(app) {
         res.status(200).json(msgs);
       })
       .catch(err => {
+        console.log(err.message);
         res.status(400).send(err.message);
       });
   });

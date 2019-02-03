@@ -5,7 +5,8 @@ exports.seed = function(knex, Promise) {
     .then(function() {
       // Inserts seed entries
       return knex("users").insert([
-        {//1
+        {
+          //1
           username: "nic",
           password: "123",
           fullname: "Nick Fury",
@@ -15,7 +16,8 @@ exports.seed = function(knex, Promise) {
           gender: "Male",
           roles: "doctor",
         },
-        {//2
+        {
+          //2
           username: "ton",
           password: "123",
           fullname: "Tony Stark",
@@ -26,7 +28,8 @@ exports.seed = function(knex, Promise) {
           roles: "patient",
           diagnosed: ["Elbow"],
         },
-        {//3
+        {
+          //3
           username: "ste",
           password: "123",
           fullname: "Steve Rogers",
@@ -37,7 +40,8 @@ exports.seed = function(knex, Promise) {
           roles: "patient",
           diagnosed: ["Wrist"],
         },
-        {//4
+        {
+          //4
           username: "bru",
           password: "123",
           fullname: "Bruce Banner",
@@ -46,9 +50,10 @@ exports.seed = function(knex, Promise) {
           email: "bru@gmail.com",
           gender: "Male",
           roles: "patient",
-          diagnosed: ["Elbow"]
+          diagnosed: ["Elbow"],
         },
-        {//5
+        {
+          //5
           username: "nat",
           password: "123",
           fullname: "Natasha Romanoff",
@@ -59,7 +64,8 @@ exports.seed = function(knex, Promise) {
           roles: "patient",
           diagnosed: ["Elbow"],
         },
-        {//6
+        {
+          //6
           username: "sco",
           password: "123",
           fullname: "Scott Lang",
@@ -70,7 +76,8 @@ exports.seed = function(knex, Promise) {
           roles: "patient",
           diagnosed: ["Wrist", "Elbow"],
         },
-        {//7
+        {
+          //7
           username: "tha",
           password: "123",
           fullname: "Thanos",
@@ -81,7 +88,8 @@ exports.seed = function(knex, Promise) {
           roles: "patient",
           diagnosed: ["Wrist"],
         },
-        {//8
+        {
+          //8
           username: "lok",
           password: "123",
           fullname: "Loki",
@@ -92,7 +100,8 @@ exports.seed = function(knex, Promise) {
           roles: "patient",
           diagnosed: ["Elbow"],
         },
-        {//9
+        {
+          //9
           username: "tho",
           password: "123",
           fullname: "Thor",
@@ -103,7 +112,8 @@ exports.seed = function(knex, Promise) {
           roles: "patient",
           diagnosed: ["Wrist"],
         },
-        {//10
+        {
+          //10
           username: "doc",
           password: "123",
           fullname: "Doctor Strange",
@@ -112,9 +122,10 @@ exports.seed = function(knex, Promise) {
           email: "ste@gmail.com",
           gender: "Male",
           roles: "patient",
-          diagnosed: ["Wrist" ,"Elbow"],
+          diagnosed: ["Wrist", "Elbow"],
         },
-        {//11
+        {
+          //11
           username: "pet",
           password: "123",
           fullname: "Peter Parker",

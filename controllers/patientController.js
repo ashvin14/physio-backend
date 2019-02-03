@@ -5,8 +5,7 @@ const route = express.Router();
 const knex = require("knex");
 
 module.exports.controllerFunction = function(app) {
-
-  route.post('/score', (req, res) => {
+  route.post("/score", (req, res) => {
     let { user_id, session_id, score, date, day, joint } = req.body;
     let scoreDetails = { user_id, session_id, score, date, day, joint };
 
@@ -17,9 +16,16 @@ module.exports.controllerFunction = function(app) {
       .catch(err => res.status(500).send(err.message));
   });
 
-  route.post('/rom', (req, res) => {
+  route.post("/rom", (req, res) => {
     let { user_id, session_id, joint, created_at, min_rom, max_rom } = req.body;
-    let ROMDetails = { user_id, session_id, joint, created_at, min_rom, max_rom };
+    let ROMDetails = {
+      user_id,
+      session_id,
+      joint,
+      created_at,
+      min_rom,
+      max_rom,
+    };
 
     const newUser = new userModel();
     newUser
