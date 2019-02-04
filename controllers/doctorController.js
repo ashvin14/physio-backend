@@ -128,6 +128,7 @@ module.exports.controllerFunction = function(app) {
             "update Report",
             patient.fullname,
             message,
+            req.session.user.fullname,
           )
           .then(response => {
             Patient.saveMail({ message, user_id })

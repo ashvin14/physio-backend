@@ -6,9 +6,17 @@ const nodemailer = require("nodemailer"),
   jade = require("jade"),
   Promise = require("bluebird");
 
-exports.functionToSendEmail = (emailId, subject, name, message) => {
+exports.functionToSendEmail = (
+  emailId,
+  subject,
+  name,
+  message,
+  senderUserName,
+) => {
   const mailOptions = {
-    from: "physio-admin doctor <" + process.env.EMAIL_SENDER_USERNAME + ">",
+    from:
+      "physio-admin doctor <" + process.env.EMAIL_SENDER_USERNAME ||
+      senderUserName + ">",
     to: emailId,
     subject: subject + " [Do not reply]",
     html: message,
@@ -17,8 +25,9 @@ exports.functionToSendEmail = (emailId, subject, name, message) => {
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     auth: {
-      user: process.env.EMAIL_SENDER_USERNAME,
-      pass: process.env.EMAIL_SENDER_PASSWORD,
+      user: process.env.EMAIL_SENDER_USERNAME || "physioa6@gmail.com",
+
+      pass: process.env.EMAIL_SENDER_PASSWORD || "Pass@1234",
     },
   });
 
