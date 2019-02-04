@@ -14,9 +14,8 @@ exports.functionToSendEmail = (
   senderUserName,
 ) => {
   const mailOptions = {
-    from:
-      "physio-admin doctor <" + process.env.EMAIL_SENDER_USERNAME ||
-      senderUserName + ">",
+    from: `physio-admin doctor <${process.env.EMAIL_SENDER_USERNAME ||
+      senderUserName}>`,
     to: emailId,
     subject: subject + " [Do not reply]",
     html: message,
