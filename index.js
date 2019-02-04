@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 });
 app.use(
   require("cors")({
-    origin: "http://localhost:3000",
+    origin: true,
     credentials: true,
   }),
 );
