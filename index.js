@@ -63,10 +63,6 @@ app.use(
   }),
 );
 
-app.use("/", (req, res) => {
-  res.send("Connection Established!");
-});
-
 fs.readdirSync("./controllers").forEach(function(file) {
   if (file.indexOf(".js")) {
     const route = require("./controllers/" + file);
