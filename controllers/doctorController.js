@@ -118,33 +118,25 @@ module.exports.controllerFunction = function(app) {
     let { user_id } = req.query;
     let Patient = new patientModel({});
 
+    const saveMailToUser = patient =>
+      emailSender.functionToSendEmail(
+        patient.email,
+        "update Report",
+        patient.fullname,
+        message,
+      );
+    const saveMailToDb = () => Patient.saveMail({ message, user_id });
+
     if (!message) res.status(500).send("message field cannot be empty");
 
     Patient.findOneAndReturn(user_id)
-      .then(patient => {
-        emailSender
-          .functionToSendEmail(
-            patient.email,
-            "update Report",
-            patient.fullname,
-            message,
-            req.session.user.fullname,
-          )
-          .then(response => {
-            Patient.saveMail({ message, user_id })
-              .then(response => {
-                res.status(200).json(response);
-              })
-              .catch(err => {
-                throw err;
-              });
-          })
-          .catch(err => {
-            throw err;
-          });
+      .then(saveMailToUser)
+      .then(saveMailToDb)
+      .then(response => {
+        res.status(200).json(response);
       })
       .catch(err => {
-        res.status(400).send(err.message);
+        throw err;
       });
   });
 

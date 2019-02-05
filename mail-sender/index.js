@@ -6,13 +6,16 @@ const nodemailer = require("nodemailer"),
   jade = require("jade"),
   Promise = require("bluebird");
 
-exports.functionToSendEmail = (
-  emailId,
-  subject,
-  name,
-  message,
-  senderUserName,
-) => {
+exports.functionToSendEmail = (emailId, subject, name, message) => {
+  message =
+    `<head>
+    <style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+</head>` + message;
+
   const mailOptions = {
     from: `physio-admin doctor <${process.env.EMAIL_SENDER_USERNAME ||
       senderUserName}>`,
