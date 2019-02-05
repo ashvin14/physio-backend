@@ -118,7 +118,7 @@ module.exports.controllerFunction = function(app) {
     let { user_id } = req.query;
     let Patient = new patientModel({});
 
-    const saveMailToUser = patient =>
+    const sendMailToUser = patient =>
       emailSender.functionToSendEmail(
         patient.email,
         "update Report",
@@ -130,7 +130,7 @@ module.exports.controllerFunction = function(app) {
     if (!message) res.status(500).send("message field cannot be empty");
 
     Patient.findOneAndReturn(user_id)
-      .then(saveMailToUser)
+      .then(sendMailToUser)
       .then(saveMailToDb)
       .then(response => {
         res.status(200).json(response);
