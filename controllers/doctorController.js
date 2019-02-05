@@ -109,6 +109,7 @@ module.exports.controllerFunction = function(app) {
         res.status(200).json(patientData);
       })
       .catch(err => {
+        console.log(err);
         res.status(400).send(err.message);
       });
   });

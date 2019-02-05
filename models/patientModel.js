@@ -130,7 +130,16 @@ class PatientModel {
     return knex("users")
       .where("user_id", patientID)
       .update(updatedDetails)
-      .then(() => patientData)
+      .then(() =>
+        knex
+          .where({ user_id })
+          .from("users")
+          .first()
+          .then(response => response)
+          .catch(err => {
+            throw err;
+          }),
+      )
       .catch(err => {
         throw new Error("User Details cannot be updated");
       });
