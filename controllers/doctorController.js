@@ -123,7 +123,7 @@ module.exports.controllerFunction = function(app) {
       emailSender.functionToSendEmail(
         patient.email,
         "update Report",
-        patient.fullname,
+        req.session.user.fullname,
         message,
       );
     const saveMailToDb = () => Patient.saveMail({ message, user_id });

@@ -17,8 +17,7 @@ table, th, td {
 </head>` + message;
 
   const mailOptions = {
-    from: `physio-admin doctor <${process.env.EMAIL_SENDER_USERNAME ||
-      senderUserName}>`,
+    from: `physio-admin doctor <${process.env.EMAIL_SENDER_USERNAME || name}>`,
     to: emailId,
     subject: subject + " [Do not reply]",
     html: message,

@@ -16,6 +16,17 @@ exports.seed = function(knex, Promise) {
           gender: "Male",
           roles: "doctor",
         },
+        {
+          username: "ashvin",
+          password: "123",
+          fullname: "Ashvin Khairnar",
+          age: 21,
+          mobile: 8879742596,
+          email: "yashkhrnr@gmail.com",
+          gender: "Male",
+          roles: "patient",
+          diagnosed: ["Elbow", "Wrist"],
+        },
       ]);
     });
 };
