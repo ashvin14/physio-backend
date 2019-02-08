@@ -3,7 +3,8 @@ const fs = require("fs");
 const userModel = require("../models/userModel");
 const route = express.Router();
 const knex = require("knex");
-const chkLogin = require("../middleware/checkLogin");
+const chkLogin = require("../middleware/checkLogin"),
+  emailSender = require("../mail-sender");
 
 module.exports.controllerFunction = function(app) {
   route.post("/login", (req, res) => {
@@ -40,13 +41,24 @@ module.exports.controllerFunction = function(app) {
 
   route.post("/signup", (req, res) => {
     let userDetails = req.body;
-    
+
     const newUser = new userModel();
     newUser
       .save(userDetails)
+      .then(
+        emailSender.functionToSendEmail(
+          userDetails.email,
+          "Sign Up",
+          userDetails.fullname,
+          `<h1>Congrats on setting up account on physio-app</h1>
+          <p>your credentials for unity login are</p>
+          <p>username:${userDetails.username}</p>
+          <p>password:${userDetails.password}</p>`,
+        ),
+      )
       .then(user => {
         delete user.password;
-        res.status(201).json(user)
+        res.status(201).json(user);
       })
       .catch(err => res.status(500).send(err.message));
   });
